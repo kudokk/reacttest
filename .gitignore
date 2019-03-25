@@ -1,11 +1,8 @@
+.vscode
+.idea
+.DS_STORE
 node_modules
-.env
+.module-cache
+*.log*
+build
 dist
-storybook-static
-coverage
-*.clinic-doctor*
-node_trace*
-.awcache/
-
-# .env.dev
-# .env.prod

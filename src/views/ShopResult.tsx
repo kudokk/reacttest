@@ -22,7 +22,7 @@ const component: React.SFC<Props> = (props: Props) => {
                                 <ShopInner>
                                     <Flex>
                                         <ShopImage>
-                                            <img src={e.image_url.path} alt={e.name} />
+                                            <img src={e.image_url.shop_image1} alt={e.name} />
                                         </ShopImage>
                                         <ShopDesc>
                                             <ShopName>

@@ -1,48 +1,71 @@
+import { ThunkAction, ThunkDispatch } from 'redux-thunk'
+import { AnyAction } from 'redux';
 import { RouterState } from 'connected-react-router';
+import { getapi } from '../isormorphic/restapi'
 
 const TRANSITION = 'shopcassette/transition'
-const DECREMENT = 'counter/decrement'
-const RESET = 'counter/reset'
+const RESET = 'shopcassette/reset'
+const SET_ACTION = 'thunk/set'
+const SET_FETCHING = 'thunk/setfetch'
 
 type Transition = {
   type: typeof TRANSITION
 }
-type Decrement = {
-  type: typeof DECREMENT
-}
 type Reset = {
   type: typeof RESET
-  payload: number
+  data: object
 }
 
-export type Action = Transition | Decrement | Reset
+type SetAction = {
+  type: typeof SET_ACTION
+  accessToken: string
+}
+type SetFetcing = {
+  type: typeof SET_FETCHING
+  isFetching: boolean
+}
+
+export type Action = Transition | Reset | SetAction | SetFetcing
 
 export const transition = (): Transition => ({ type: TRANSITION })
-export const decrement = (): Decrement => ({ type: DECREMENT })
-export const reset = (num: number): Reset => ({ type: RESET, payload: num })
+export const reset = (data: object): Reset => ({ type: RESET, data })
+export const set = (accessToken: string): SetAction => ({ type: SET_ACTION, accessToken })
+export const isFetching = (isFetching: boolean): SetFetcing => ({ type: SET_FETCHING, isFetching })
+
+export const pagination = (): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
+  // Invoke API
+  return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
+    dispatch(isFetching(true))
+    return getapi()
+  }
+}
 
 export type RootState = ShopCassette & {
   router: RouterState
 }
 
-export type ShopCassette = {
+export type AccessToken = {
+  isFetching: boolean
+  accessToken?: string
+}
+
+export type ShopCassette = AccessToken & {
   rest: {
     id: string,
-    image_url: { path: string }
+    image_url: { shop_image1: string }
     name: string,
     category: string,
     url: string,
     address: string
-  }[]; 
+  }[];
 }
-
 
 export const initialCounterState = (): object => {
   return { 
     rest: [
       {
         id: "a00000",
-        image_url: { path: "https://uds.gnst.jp/rest/img/jwhsmt630000/t_00if.jpg" },
+        image_url: { shop_image1: "https://uds.gnst.jp/rest/img/jwhsmt630000/t_00if.jpg" },
         name: "ＩＳＯＬＡ ｂｌｕ",
         category: "本格窯焼イタリアンバル",
         url: "http://",
@@ -50,7 +73,7 @@ export const initialCounterState = (): object => {
       },
       {
         id: "a00001",
-        image_url: { path: "https://uds.gnst.jp/rest/img/jwhsmt630000/t_00if.jpg" },
+        image_url: { shop_image1: "https://uds.gnst.jp/rest/img/jwhsmt630000/t_00if.jpg" },
         name: "ＩＳＯＬＡ ｂｌｕ",
         category: "本格窯焼イタリアンバル",
         url: "http://",
@@ -58,13 +81,14 @@ export const initialCounterState = (): object => {
       },
       {
         id: "a00001",
-        image_url: { path: "https://uds.gnst.jp/rest/img/jwhsmt630000/t_00if.jpg" },
+        image_url: { shop_image1: "https://uds.gnst.jp/rest/img/jwhsmt630000/t_00if.jpg" },
         name: "ＩＳＯＬＡ ｂｌｕ",
         category: "本格窯焼イタリアンバル",
         url: "http://",
         address: "〒104-0061 東京都中央区銀座1-13-8"
       }
     ],
+    isFetching: false
   }
 }
 
@@ -73,9 +97,14 @@ export const reducer = (
   action: Action
 ) => {
   switch (action.type) {
-    case TRANSITION: {
-      return { state }
-    }
+    case TRANSITION:
+      return state
+    case RESET:
+      return {...state, rest: action.data}
+    case SET_ACTION:
+        return { ...state, accessToken: action.accessToken }
+    case SET_FETCHING:
+        return { ...state, isFetching: action.isFetching }
     default: {
       return state
     }

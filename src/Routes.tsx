@@ -4,8 +4,8 @@ import { Switch } from 'react-router-dom';
 
 import Home from './views/Home';
 import AboutUs from './views/AboutUs';
-import Pager from './views/Pager';
 import ShopResult from './views/ShopResult';
+import Pager from './views/Pager';
 
 const component: React.SFC = () => {
     return (

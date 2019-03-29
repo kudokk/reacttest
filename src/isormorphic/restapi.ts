@@ -1,13 +1,21 @@
 import axios from 'axios'
 
-const restApiUrl = 'https://api.gnavi.co.jp/RestSearchAPI/v3/?keyid=9a33e2fbbf4761bdad0ce3b6afbe7a38&areacode_m=AREAM2105'
+const restApiUrl = 'https://www.googleapis.com/books/v1/volumes?q=japan'
+
+const ax = axios.create({
+  timeout: 50000,
+  headers: {},
+})
 
 const axiosGet = () => {
-  return axios
+  return ax
     .get(restApiUrl)
     .then((res) => {
       return res.data
     })
+    .catch((e) => {
+      console.log(e)
+    }) 
 }
 
 export const getapi = async () => {

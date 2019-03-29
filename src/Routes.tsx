@@ -4,17 +4,14 @@ import { Switch } from 'react-router-dom';
 
 import Home from './views/Home';
 import AboutUs from './views/AboutUs';
-import NavigationBar from './views/NavigationBar';
+import Pager from './views/Pager';
+import ShopResult from './views/ShopResult';
 
 const component: React.SFC = () => {
     return (
         <div>
-            <NavigationBar 
-                items={[
-                    { display: 'kudo', to: '/' },
-                    { display: 'About us', to: '/aboutus' },
-                ]} 
-            />
+            <ShopResult />
+            <Pager />
             <Switch>
                 <Route exact path={'/'} component={Home} />
                 <Route exact path={'/aboutus'} component={AboutUs} />

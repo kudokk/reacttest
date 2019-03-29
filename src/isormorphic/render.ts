@@ -17,7 +17,7 @@ export const render = (
                 ${styleTag}
             </head>
             <body>
-                <div id="root">${content}</div>
+                <div id="root">${content}<div>${state}</div></div>
                 <script>
                     window.INITIAL_STATE = ${JSON.stringify(state)};
                 </script>

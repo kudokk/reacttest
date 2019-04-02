@@ -11,27 +11,28 @@ type OwnProps = {
 };
 
 type DispatchProps = {
-  pagination: () => void
+  pagination: (page: number) => void
 }
 
 export type Props = RootState & OwnProps & AccessToken & DispatchProps;
 
 const component = (props: Props) => {
+  const list = [1, 2, 3, 4]
   return (
       <Pager>
-        <li>
-          <a>1</a>
-          <a>2</a>
-          <a>3</a>
-          <a>4</a>
-        <button onClick={() => props.pagination()}>
-          {
-            props.isFetching
-            ? <i></i>
-            : 'Login'
-          }
-        </button>
-        </li>
+        {
+          list.map((e) => {
+            return (
+              <li key={e}>
+                {
+                  props.isFetching
+                    ? <span>{e}</span>
+                    : <a onClick={() => props.pagination(e)}>{e}</a>
+                }
+              </li>
+            )
+          })
+        }
       </Pager>
   );
 };
@@ -52,10 +53,10 @@ const Pager = styled.ul`
 
 const mapStateToProps = (state: RootState) => state
 
-const mapAsyncDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>): DispatchProps => {
+const mapAsyncDispatchToProps = ( dispatch: ThunkDispatch<{}, {}, any>): DispatchProps => {
   return {
-    pagination: async () => {
-      const data = await dispatch(pagination())
+    pagination: async (page: number) => {
+      const data = await dispatch(pagination(page))
       await dispatch(isFetching(false))
       await dispatch(reset(data))
       console.log('Login completed [UI]')

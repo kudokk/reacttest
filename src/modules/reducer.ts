@@ -32,11 +32,11 @@ export const reset = (data: object): Reset => ({ type: RESET, data })
 export const set = (accessToken: string): SetAction => ({ type: SET_ACTION, accessToken })
 export const isFetching = (isFetching: boolean): SetFetcing => ({ type: SET_FETCHING, isFetching })
 
-export const pagination = (): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
+export const pagination = (page: number): ThunkAction<Promise<void>, {}, {}, AnyAction> => {
   // Invoke API
   return async (dispatch: ThunkDispatch<{}, {}, AnyAction>): Promise<void> => {
     dispatch(isFetching(true))
-    return getapi()
+    return getapi(page)
   }
 }
 
